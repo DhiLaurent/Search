@@ -2,3 +2,4 @@ Criar search com google hacking
 - Mostrar quantos resultados foram obtidos de uma query por exemplo site:
 - Colocar as principais querys baseadas no exploit db (GHDB) e google hacking
 - Enumeração de sub dominio via google hacking
+- Buscas de palavras chaves como password, database, aws, token etc

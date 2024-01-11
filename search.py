@@ -79,7 +79,6 @@ if user_input == "1":
 
 if user_input == "2":
     from googlesearch import search
-    import os
 
     def search_google(query):
         results = []

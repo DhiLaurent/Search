@@ -4,9 +4,20 @@ import time
 import sys
 
 os.environ['SHELL'] = '/bin/bash'
-os.system("clear")
+def clear():
+    subprocess.run('clear', shell=True)
+
+
 def help():
-    print("[1] - Parsing source code Enum")
+    print("+-----------------------------------------+")
+    print("| [1] - Parsing source code Enum          |\n"
+          "| [2] - Google Hacking                    |\n"
+          "| [3] - Zone Transfer validation          |\n"
+          "| [4] - Check Alias (SubDomain Take Over) |")
+    print("+-----------------------------------------+\n")
+
+clear()
+help()
 
 user_input = input("Number: ")
 
@@ -77,7 +88,7 @@ if user_input == "1":
         print(f"[!] {error}")
         exit()
 
-if user_input == "2":
+elif user_input == "2":
     from googlesearch import search
 
     def search_google(query):
@@ -120,3 +131,35 @@ if user_input == "2":
             print(f"URL: {result['url']}")
             print("-" * 50)
 
+elif user_input == "3":
+    domain = input("Domain: ")
+    zone_transfer = f'for server in $(host -t ns {domain} | cut -d " " -f4); do host -l -a {domain} $server | grep -v "failed" | grep -v "timed out" | grep -v "no servers could be reached"; done'
+    #zone_transfer = f'for server in $(host -t ns {domain} | cut -d " " -f4); do host -l -a {domain} $server; done'
+    result_zt = subprocess.run(zone_transfer, shell=True, stdout=subprocess.PIPE, text=True)
+    print(result_zt.stdout)
+
+elif user_input == "4":
+    print("[!] Need Sub domain list\n"
+          "[*] Example:\n"
+          "www\n"
+          "www2\n"
+          "admin\n"
+          "support")
+    file = input("File name: ")
+    with open(f'{file}', 'r', encoding='iso8859_15') as file:
+        for line in file:
+            line = line.strip()
+            print(line)
+    
+   
+    
+    print(line)
+    #domain = input("Domain: ")
+    #alias_sdtk = f'for palavra in $(cat {file});do host -t cname {$palavra}.{domain} | grep "alias for"; done'
+    #alias_sdtk = f'for palavra in $(cat {file});do host -t cname {$palavra}.{domain} | grep "alias for"; done'
+    #alias_sdtk = f'cat {file} | while read palavra; do host -t cname $palavra.{domain} | grep "alias for"; done'
+    #result_sdtk = subprocess.run(alias_sdtk, shell=True, stdout=subprocess.PIPE, text=True)
+    #print(result_sdtk.stdout)
+else:
+    print("[!] Type valid number")
+    exit()

@@ -134,7 +134,6 @@ elif user_input == "2":
 elif user_input == "3":
     domain = input("Domain: ")
     zone_transfer = f'for server in $(host -t ns {domain} | cut -d " " -f4); do host -l -a {domain} $server | grep -v "failed" | grep -v "timed out" | grep -v "no servers could be reached"; done'
-    #zone_transfer = f'for server in $(host -t ns {domain} | cut -d " " -f4); do host -l -a {domain} $server; done'
     result_zt = subprocess.run(zone_transfer, shell=True, stdout=subprocess.PIPE, text=True)
     print(result_zt.stdout)
 
@@ -146,20 +145,13 @@ elif user_input == "4":
           "admin\n"
           "support")
     file = input("File name: ")
-    with open(f'{file}', 'r', encoding='iso8859_15') as file:
-        for line in file:
-            line = line.strip()
-            print(line)
-    
-   
-    
-    print(line)
-    #domain = input("Domain: ")
-    #alias_sdtk = f'for palavra in $(cat {file});do host -t cname {$palavra}.{domain} | grep "alias for"; done'
-    #alias_sdtk = f'for palavra in $(cat {file});do host -t cname {$palavra}.{domain} | grep "alias for"; done'
-    #alias_sdtk = f'cat {file} | while read palavra; do host -t cname $palavra.{domain} | grep "alias for"; done'
-    #result_sdtk = subprocess.run(alias_sdtk, shell=True, stdout=subprocess.PIPE, text=True)
-    #print(result_sdtk.stdout)
+    domain = input("Domain: ")
+    alias_sdtk = f'for palavra in $(cat {file});do host -t cname $palavra.{domain} | grep "alias for"; done'
+
+    result_sdtk = subprocess.run(alias_sdtk, shell=True, stdout=subprocess.PIPE, text=True)
+    print("-" * 50)
+    print(result_sdtk.stdout)
+    print("-" * 50)
 else:
     print("[!] Type valid number")
     exit()

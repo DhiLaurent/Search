@@ -13,7 +13,8 @@ def help():
     print("| [1] - Parsing source code Enum          |\n"
           "| [2] - Google Hacking                    |\n"
           "| [3] - Zone Transfer validation          |\n"
-          "| [4] - Check Alias (SubDomain Take Over) |")
+          "| [4] - Check Alias (SubDomain Take Over) |\n"
+          "| [5] - Wayback Enumeration               |")
     print("+-----------------------------------------+\n")
 
 clear()
@@ -152,6 +153,31 @@ elif user_input == "4":
     print("-" * 50)
     print(result_sdtk.stdout)
     print("-" * 50)
+
+elif user_input == "5":
+    try:
+        import importlib
+        importlib.import_module('waybackpy')
+        print("[1] - Sub domain Enumeration\n"
+            "[2] - Enumerate all\n")
+        option = input("Type an option: ") 
+        domain = input("Type domain: ")
+        if option == "1":
+            sub_domains = f'waybackpy -u {domain} -sub --known-urls | cut -d "/" -f1,2,3 | sort | uniq'
+            result_wayback_sub = subprocess.run(sub_domains, shell=True, stdout=subprocess.PIPE, text=True)
+            print(result_wayback_sub.stdout)
+        elif option == "2":
+            results = f'waybackpy -u {domain} -sub --known-urls'
+            result_wayback = subprocess.run(results, shell=True, stdout=subprocess.PIPE, text=True)
+            print(result_wayback.stdout)
+
+    except Exception as error:
+        print(f"[!] Module waybackpy not installed\n[*] {error}")
+        result_install = subprocess.run('pip3 install waybackpy > /dev/null 2>&1', shell=True)
+        print("[!] Module waybackpy installed run script again!")
+        exit(0)
+       
+
 else:
     print("[!] Type valid number")
     exit()
